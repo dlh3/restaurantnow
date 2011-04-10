@@ -1,0 +1,29 @@
+{% extends 'index.html' %}
+{% block title %}WEB TITLE{% endblock %}
+{% block menubar %}
+<div id="webMenu">
+    <div id="webMenuTopBar"><div id="topMenuBarText"><span id="dine">Dine</span>&nbsp;&amp;&nbsp;<span id="dash">Dash</span></div>
+    </div>
+    <div id="webMenuItemsBar">
+        <div class="webMenuItem"><span class="webMenuItemText"><a href="{% url web:menu %}">Menu</a><span></div>
+        <div class="webMenuItem"><span class="webMenuItemText"><a href="{% url web:specials %}">Specials</a><span></div>
+        <div class="webMenuItem"><span class="webMenuItemText"><a href="{% url web:directions %}">Our Location</a></span></div>
+        {% if user.is_authenticated %}
+        <div class="webMenuItem"><span class="webMenuItemText"><a href="{% url web:previous %}">Past Orders</a></span></div>
+        <div class="webMenuItem"><span class="webMenuItemText"><a href="{% url web:members %}">VIP</a></span></div>
+        {% else %}
+        <div class="webMenuItem empty"></div>
+        <div class="webMenuItem empty"></div>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <div class="webMenuItem"><span class="webMenuItemText"><a href="{% url web:profile %}">My Account</a></span></div>
+        <div class="webMenuItem webMenuItemLast"><span class="webMenuItemText"><a href="{% url core:logout %}?next={{ auth_next|default:request.path }}">Logout</a></span></div>
+        {% else %}
+        <div class="webMenuItem"><span class="webMenuItemText"><a href="{% url web:register %}">Register</a></span></div>
+        <div class="webMenuItem webMenuItemLast"><span class="webMenuItemText"><span id="showloginboxcontainer"><a id="showloginboxlink" class="link" href="#" onclick="return false">Login</a></span></div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+{% block pagecontent %}
+{% endblock %}

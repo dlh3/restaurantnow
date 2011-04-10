@@ -1,0 +1,30 @@
+{% extends 'web/index.html' %}
+{% block title %}Delete Account{% endblock %}
+{% block pagecontent %}
+    <div>
+        <form method="post" action="{% url web:delete %}?next={{ auth_next }}">
+        <div>
+            {% csrf_token %}
+            </div>
+            <dl class="form">
+            <dt><label for="id_username">Username: <span class="required"></span></label></dt>
+                <dd>
+                    <div class="field">
+                        <input id="id_username" type="text" readonly="readonly" name="username" value="{{ user.username }}" maxlength="100" />
+                    </div>
+                </dd>
+            <dt><label for="id_password">Password: <span class="required">*</span></label></dt>
+                <dd>
+                    <div class="formerror">{% if errors %}{{ errors }}{% endif %}</div>
+                    <div class="field">
+                        <input id="id_password" type="password" name="password" maxlength="100" />
+                    </div>
+                </dd>
+            <dt>Delete Account?</dt>
+            <dd>
+                <div><input type="submit" value="Delete Account" /></div>
+            </dd>
+            </dl>
+        </form>
+    </div>
+{% endblock %}

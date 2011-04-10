@@ -1,0 +1,56 @@
+{% extends 'web/index.html' %}
+{% block title %}Past Orders{% endblock %}
+{% block extrahead %}
+<script src="/static/web/previous.js" type="text/javascript"></script>
+{% endblock %}
+{% block pagecontent %}
+    <div>
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url web:previous %}?next={{ auth_next|default:request.path }}">
+                <div id="formcontainer">
+                    {% csrf_token %}
+                    {% endif %}
+                     
+                    <div id='orders'>
+                    {% for order in orders %}
+                        <h3 class="ordercategoryname"><a href="#">{{ order.date|date:"l, F j, Y" }} </a></h3>
+                        <div class="order" id="order{{ order.id }}">
+                            <div>
+                                <span>Order: {{ order.id }} </span>
+                            </div>
+                            <div>
+                                <span>Date: {{ order.date|date:"l, F j, Y" }} </span>
+                            </div>
+                            <div>
+                                <span>Address: {{ order.address }} </span>
+                            </div>
+                            {% if order.delivery %}
+                                Delivery
+                            {% else %}
+                                Pick-Up
+                            {% endif %}
+                            <div class="items">
+                                {% for item in items %}
+                                       {% if item.order = order %}
+                                       <div class="item" id="item{{ item.id }}">
+                                            <div><img src="{% url core:foodimages path=item.item.item.image %}" alt="Yum, {{ item.item.item.description }}" width="50" height="50" />{{ item.item.item }}</div>
+                                            <div>
+                                                <span class="menuitemquantity">Qty: <span class="itemquantity">{{ item.quantity }}</span></span>
+                                                x<span class="menuitemprice">$<span class="itemprice">{{ item.item.price|floatformat:2 }}</span></span>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                {% endfor %}
+                            
+                                <div>
+                                    Total: $<span class="ordersubtotal">{{ order.total|floatformat:2 }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+
+                </div>
+              </form>
+    </div>
+{% endblock %}

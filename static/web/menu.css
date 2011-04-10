@@ -1,0 +1,19 @@
+/***************************************
+** Food Menu
+***************************************/
+.ordercartcontents
+{
+    vertical-align: middle;
+}
+
+#ordercart
+{
+    background: #fdd;
+    border: 2px solid #666;
+    color: black;
+}
+
+.unavailable
+{
+    color: #f44;
+}

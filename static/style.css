@@ -1,0 +1,242 @@
+/***************************************
+** Global
+***************************************/
+body
+{
+    background-color: #000;
+    background-image: none;
+    color: #fff;
+    font-family: sans-serif;
+}
+
+#universe
+{
+    max-width: 1030px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#content
+{
+    border: 1px solid #f79646;
+    clear: left;
+}
+
+a:link { color: #00e; }
+a:visited { color: #529; }
+a:active { color: #f00; }
+a.link
+{
+    color: #00e;
+}
+
+.formerror
+{
+    display: block;
+    color: #c00;
+}
+
+/***************************************
+** Message Middleware
+***************************************/
+#messages
+{
+    width: 1045px;
+    margin-left: -8px;
+}
+
+ul.messagelist
+{
+    margin: 0.5em;
+    padding: 1ex;
+    border: 1px dashed #888;
+    list-style-type: none;
+    background: #ccc;
+}
+
+ul.messagelist li
+{
+    margin: 0;
+    padding: 0;
+}
+
+ul.messagelist li.info
+{
+    color: #00a;
+}
+
+ul.messagelist li.success
+{
+    color: #0a0;
+}
+
+ul.messagelist li.error
+{
+    color: #a00;
+}
+
+/***************************************
+ *  Register/Edit profile forms
+ **************************************/
+
+#content dd
+{
+    width: 35em;
+}
+
+
+.errorfield
+{
+    float: right;
+    color: #c00;
+    font-weight: bold;
+    display: none;
+}
+
+
+/***************************************
+** Web Menu 
+***************************************/
+
+#webMenuTopBar 
+{
+    background-image: url('/static/menuTopbarGradiant.png');
+    width: 1023px;
+    height: 70px;
+    color: white;
+    font-size: 4em;
+    text-align: center;
+    border: 3px solid #f79646;
+}
+#webMenuTopBar #dine
+{
+    color: #93cddd;
+}
+
+#webMenuTopBar #dash
+{
+    color: #dfd660;
+}
+
+#webMenuItemsBar
+{
+    width: 1023px;
+    background-color: #4f6228;
+    height: 27px;
+    border-width: 1px 3px 2px;
+    border-style: solid;
+    border-color: #f79646;
+}
+.webMenuItem
+{
+    float: left;
+    background-color: #4f6228;
+    color: white;
+    font-size: 1.2em;
+    text-align: center;
+    width: 145px;
+    height: 25px;
+    padding-top: 2px;
+}
+
+.webMenuItem a
+{
+    color: white;
+    text-decoration: none;
+}
+
+.webMenuItem:hover
+{
+    background-color: #728b3a;
+}
+
+.webMenuItem.empty 
+{
+    border-right: none;
+    border-left: none;
+    padding-left: 0.09em;
+}
+.webMenuItem.empty:hover
+{
+    background-color: #4f6228;
+}
+
+.webMenuItem.webMenuItemLast
+{
+    float: right;
+}
+
+#menubarlogin
+{
+    width: 25%;
+    text-align: left;
+    font-size: 80%;
+    float: right;
+}
+
+#loginbox
+{
+    background: #ddf;
+    border: 2px solid #666;
+    display: none;
+    width: 19em;
+    height: 7em;
+    float: right;
+}
+a.closeLogin
+{
+    color: #555;
+    margin-right: 0.25em;
+    float: right;
+    text-decoration: none;
+    margin-bottom: -1em;
+    margin-top: 0.25em;
+}
+
+#loginFormContainer 
+{
+    width: 18em;
+    margin-bottom: 1.2em;
+    margin-top: 1.3em;
+    margin-left: 0.5em;
+}
+#loginbox .loginboxText
+{
+    left: 0.5em;
+    float: left;
+    margin-top: 0.2em;
+    color: #000
+}
+
+#loginbox .loginboxInput
+{
+    margin-left: 1em;
+    float: right;
+}
+
+#loginFormSubmit
+{
+    margin-left: 0.2em;
+}
+
+
+
+/***************************************
+** Misc, Curtis?
+***************************************/
+
+dt
+{
+    font-weight: bold;
+}
+
+.helptext
+{
+    color: #888;
+    font-size: 80%;
+}
+
+span.required
+{
+    color: #b00;
+}

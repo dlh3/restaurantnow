@@ -1,0 +1,149 @@
+{% extends 'web/index.html' %}
+{% load value_by_key %}
+{% block title %}User Profile: {{ profile.user.get_full_name}} {% endblock %}
+{% block extrahead %}
+<link rel="stylesheet" href="/static/web/profile.css" type="text/css" />
+<script type="text/javascript">
+/* <![CDATA[ */
+var phonecategories = {};
+{% for option in phonecategories %}
+phonecategories[{{ option.id }}] = "{{ option.description }}";
+{% endfor %}
+
+var addresscategories = {};
+{% for option in addresscategories %}
+addresscategories[{{ option.id }}] = "{{ option.description }}";
+{% endfor %}
+/* ]]> */
+</script>
+<script type="text/javascript" src="/static/web/profile.js"></script>
+{% endblock %}
+{% block pagecontent %}
+<br />
+<div id="profilepage" class="display">
+    <form method="post" id="userprofileform" action="{% url web:profile %}?next={{ auth_next }}">
+    <div id="userprofileformcontainer">
+        <span class="helptext">Click any field to edit or delete your information.</span>
+        {% csrf_token %}
+        <div id="userprofilename" class="profileeditable{% if errors|key:'name' %} editableerror{% endif %}">
+            <div class="userheading">Profile: {{ profile.user.username }}<a id="profileeditall" class="editUser userprofilemode" href="#" onclick="return false">Edit all fields</a></div>
+            <div class="profileerror">{% if errors|key:'name' %}{{ errors|key:'name' }}{% endif %}</div>
+            <span class="userprofilemode">{{ profile.user.get_full_name }}<br /></span>
+            <div class="userprofileedit">
+                <span class="fieldtitle">First Name: <span class="mandatoryfield userprofileedit">*</span><br /></span>
+                <input type="text" name="first_name" value="{{ profile.user.first_name }}" maxlength="100" /><br />
+                <span class="fieldtitle">Last Name: <span class="mandatoryfield userprofileedit">*</span><br /></span>
+                <input id="id_last_name" type="text" name="last_name" value="{{ profile.user.last_name }}" maxlength="100" /><br />
+            </div>
+        </div>
+        <div id="userprofileemail" class="profileeditable{% if errors|key:'email' %} editableerror{% endif %}">
+            <div class="userheading">Email: <span class="mandatoryfield userprofileedit">*</span><a class="editLabel" href="#" onclick="return false">Edit</a></div>
+            <div class="profileerror">{% if errors|key:'email' %}{{ errors|key:'email' }}{% endif %}</div>
+            <span class="userprofilemode">{{ profile.user.email }}</span>
+            <span class="userprofileedit"><input type="text" name="email" value="{{ profile.user.email }}" maxlength="255" /></span>
+        </div>
+        <div id="phoneContainer">
+            <ul>
+                {% for phone in phones %}
+                    <li id="{{ phone.id }}"><a href="#phone{{ phone.id }}">{{ phone.description }} Phone</a></li>
+                {% endfor %}
+            </ul>
+            {% for phone in phones %}
+                <div id="{{ phone.id }}" class="profileeditable phone{% if errors|key:'phones'|key:phone.id %} editableerror{% endif %}">
+                    <div id="phone{{ phone.id }}">
+                        <input type="hidden" id="existingphone{{ phone.id }}" class="hiddeninput" name="existingphone" value="{{ phone.id }}" />
+                        <div class="userheading"><span class="profilecategorydesc">{{ phone.description }} </span>Phone:<a class="editLabel ui-icon ui-icon-pencil" href="#" onclick="return false">Edit</a><span class="userprofileedit"><a id="deletePhone{{ phone.id }}" class="editUser deletePhone ui-icon ui-icon-trash" href="#" onclick="return false">Delete this entry</a></span></div>
+                        <div class="userprofileedit">
+                            <div class="profileerror">{% if errors|key:'phones'|key:phone.id %}{{ errors|key:'phones'|key:phone.id }}{% endif %}</div>
+                            <span class="fieldtitle">Description: <span class="mandatoryfield userprofileedit">*</span><br /></span>
+                            <select name="phone{{ phone.id }}description" class="profilecategorydescsel">
+                            {% for option in phonecategories %}
+                                <option value="{{ option.id }}"{% if option == phone.description %} selected="selected"{% endif %}>{{ option.description }}</option>
+                            {% endfor %}
+                            </select><br />
+                            <span class="fieldtitle">Number: <span class="mandatoryfield userprofileedit">*</span><br /></span>
+                        </div>
+                        <span class="userprofilemode">{{ phone.number }}</span>
+                        <span class="userprofileedit"><input type="text" name="phone{{ phone.id }}number" value="{{ phone.number }}" maxlength="30" /></span>
+                    </div>
+                </div>
+        {% endfor %}
+        </div>
+        <a id="addPhone" class="add" href="#" onclick="return false">New Phone Number</a>
+        <div id="addressContainer">
+            <ul>
+                {% for address in addresses %}
+                    <li id="{{ address.id }}"><a href="#address{{ address.id }}">{{ address.description }} Address</a></li>
+                {% endfor %}
+            </ul>
+        {% for address in addresses %}
+            <div id="{{ address.id }}" class="profileeditable address{% if errors|key:'addresses'|key:addresses.id %} editableerror{% endif %}">
+            <div id="address{{ address.id }}">
+                <input type="hidden" id="existingaddress{{ address.id }}" class="hiddeninput" name="existingaddress" value="{{ address.id }}" />
+                <div class="userheading"><span class="profilecategorydesc">{{ address.description }} </span>Address:<a class="editLabel ui-icon ui-icon-pencil" href="#" onclick="return false">Edit</a><span class="userprofileedit"><a id="deleteAddress{{ address.id }}" class="editUser deleteAddress ui-icon ui-icon-trash" href="#" onclick="return false">Delete this entry</a></span></div>
+                <div class="userprofileedit">
+                    <div class="profileerror">{% if errors|key:'addresses'|key:address.id %}{{ errors|key:'addresses'|key:address.id }}{% endif %}</div>
+                    <span class="fieldtitle">Description: <span class="mandatoryfield userprofileedit">*</span><br /></span>
+                    <select name="address{{ address.id }}description" class="profilecategorydescsel">
+                    {% for option in addresscategories %}
+                        <option value="{{ option.id }}"{% if option == address.description %} selected="selected"{% endif %}>{{ option.description }}</option>
+                    {% endfor %}
+                    </select><br />
+                </div>
+                <div>
+                    <span class="fieldtitle">Line 1: <span class="mandatoryfield userprofileedit">*</span><br /></span>
+                    <span class="userprofilemode">{{ address.address1 }}</span>
+                    <span class="userprofileedit"><input type="text" name="address{{ address.id }}address1" value="{{  address.address1 }}" maxlength="100" /></span>
+                </div>
+                <div>
+                    <span class="fieldtitle">Line 2:<br /></span>
+                    <span class="userprofilemode">{{ address.address2|default:' &nbsp; ' }}</span>
+                    <span class="userprofileedit"><input type="text" name="address{{ address.id }}address2" value="{{  address.address2 }}" maxlength="100" /></span>
+                </div>
+                <div>
+                    <span class="fieldtitle">Buzz Code:<br /></span>
+                    <span class="userprofilemode">{{ address.buzzcode|default:' &nbsp; ' }}</span>
+                    <span class="userprofileedit"><input type="text" name="address{{ address.id }}buzzcode" value="{{  address.buzzcode }}" maxlength="100" /></span>
+                </div>
+                <div>
+                    <span class="fieldtitle">City: <span class="mandatoryfield userprofileedit">*</span><br /></span>
+                    <span class="userprofilemode">{{ address.city }}</span>
+                    <span class="userprofileedit"><input type="text" name="address{{ address.id }}city" value="{{  address.city }}" maxlength="100" /></span>
+                </div>
+                <div>
+                    <span class="fieldtitle">Province: <span class="mandatoryfield userprofileedit">*</span><br /></span>
+                    <span class="userprofilemode">{{ address.state }}</span>
+                    <span class="userprofileedit"><input type="text" name="address{{ address.id }}state" value="{{  address.state }}" maxlength="100" /></span>
+                </div>
+                <div>
+                    <span class="fieldtitle">Country: <span class="mandatoryfield userprofileedit">*</span><br /></span>
+                    <span class="userprofilemode">{{ address.country }}</span>
+                    <span class="userprofileedit"><input type="text" name="address{{ address.id }}country" value="{{  address.country }}" maxlength="100" /></span>
+                </div>
+                <div>
+                    <span class="fieldtitle">Postal Code: <span class="mandatoryfield userprofileedit">*</span><br /></span>
+                    <span class="userprofilemode">{{ address.postalcode }}</span>
+                    <span class="userprofileedit"><input type="text" name="address{{ address.id }}postalcode" value="{{  address.postalcode }}" maxlength="100" /></span>
+                </div>
+                <div>
+                    <span class="fieldtitle">Drivers Notes:<br /></span>
+                    <span class="userprofilemode">{{ address.drivernotes|default:' &nbsp; ' }}</span>
+                    <span class="userprofileedit"><textarea rows="2" cols="40" name="address{{ address.id }}drivernotes">{{ address.drivernotes }}</textarea></span>
+                </div>
+            </div>
+            </div>
+        {% endfor %}
+        </div>
+        <a id="addAddress" class="add" href="#" onclick="return false">New Address</a>
+        <div class="profileeditable profilenotes{% if errors|key:'notes' %} editableerror{% endif %}">
+            <div class="userheading">Notes:<a class="editLabel" href="#" onclick="return false">Edit</a></div>
+            <div class="profileerror">{% if errors|key:'notes' %}{{ errors|key:'notes' }}{% endif %}</div>
+            <span class="userprofilemode">{{ profile.notes|default:' &nbsp; ' }}</span>
+            <span class="userprofileedit"><textarea rows="3" cols="40" name="notes">{{ profile.notes }}</textarea></span>
+        </div>
+        <input type="submit" id="userprofilesavebutton" value="Update Info" />
+    </div>
+    </form>
+    <a id="userprofiledeletebutton" href="{% url web:delete %}?next={{ auth_next }}">Delete Account</a>
+</div>
+{% endblock %}

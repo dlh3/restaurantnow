@@ -1,0 +1,70 @@
+/***************************************
+** User Profile
+***************************************/
+#profilepage .userprofileedit
+{
+    display: none;
+}
+
+#profilepage .userheading
+{
+    background: #ccc;
+    font-weight: bold;
+}
+
+#profilepage .profileeditbox
+{
+    background: #ddd;
+    border: 2px solid #666;
+}
+
+#profilepage .profileeditable
+{
+    margin-bottom: 1ex;
+}
+#profilepage .editLabel
+{
+    color: #666;
+    float: right;
+    font-size: 80%;
+    display: none;
+}
+#profilepage .hideEditLabel
+{
+     visibility: hidden;
+     display: none;
+}
+
+#profilepage .fieldtitle
+{
+    color: #222;
+    font-weight: bold;
+}
+
+#profilepage .hiddeninput
+{
+    display: none;
+}
+
+a.editUser
+{
+    color: #00e;
+    float: right;
+    font-size: 80%;
+}
+a.add
+{
+    color: #00e;
+    font-size: 80%;
+}
+
+.profileerror
+{
+    color: #c00;
+    display: block;
+}
+
+.mandatoryfield
+{
+    color: #e00;
+}

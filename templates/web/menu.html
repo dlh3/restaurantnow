@@ -1,0 +1,64 @@
+{% extends 'web/index.html' %}
+{% load value_by_key %}
+{% block title %}Menu{% endblock %}
+{% block extrahead %}
+<link rel="stylesheet" href="/static/web/menu.css" type="text/css" />
+<script src="/static/jquery-ui-timepicker-addon.js" type="text/javascript"></script>
+<script src="/static/web/menu.js" type="text/javascript"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+$(document).ready(function()
+{
+    // Only show the form fields if the user is logged in
+    {% if user.is_authenticated %}$('.menuitemform').show();{% endif %}
+});
+/* ]]> */
+</script>
+{% endblock %}
+{% block pagecontent %}
+    {% if category_list %}
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url web:menu %}?next={{ auth_next|default:request.path }}">
+            <div id="menuformcontainer">
+            {% csrf_token %}
+            <input type="hidden" name="orderstep" value="1" />
+            <div id="ordercart">Your Order
+                <div id="ordercartitems"></div>
+                <hr />
+                <div id="ordercartsubtotalcontainer">Sub-total $<span id="ordercartsubtotal">0.00</span></div>
+            </div>
+            <div>
+                <label for="id_date">Date?</label> <input type="text" name="date" id="id_date" />
+                <br /><label for="id_time">Time?</label> <input type="text" name="time" id="id_time" />
+                <br /><label for="id_delivery">Delivery?</label> <input type="checkbox" id="id_delivery" name="delivery" />
+                <br /><input type="submit" id="checkout" value="Checkout" />
+            </div>
+        {% endif %}
+            <div id='menu'>
+            {% for category in category_list %}
+                <h3 class="menucategoryname"><a href="#">{{ category }}</a></h3>
+                <div class="menucategorycontainer">
+                    {% for menuitem in menu_list_bycat|key:category %}
+                    <div class="menuitem">
+                        <div id="menuitem{{ menuitem|key:'item'|key:'id' }}" class="menuitemblurb">
+                            <img src="{% url core:foodimages path=menuitem|key:'item'|key:'image' %}" alt="Yum, {{ menuitem|key:'item'|key:'description' }}" class="menuitemimage" width="50" height="50" /><span class="menuitemname">{{ menuitem|key:'item'|key:'description' }}</span><br />
+                        </div>
+                        <div class="menuitemchild">
+                        {% for item in menuitem|key:'children' %}
+                            {% if item.visible %}
+                            <div id="menuitem{{ item.id }}sized">
+                                    <span class="menuitemsize">{{ item.size }}</span>: $<span class="menuitemprice">{{ item.price|floatformat:2 }}</span><span class="menuitemform">{% if item.available %}<label for="item{{ item.id }}">Qty</label> <input type="text" name="{{ item.id }}" class="menuiteminput" id="item{{ item.id }}" size="2" />{% else %}<span class="unavailable">Currently unavailable</span>{% endif %}</span>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            </div>
+        {% if user.is_authenticated %}
+        </form>
+        {% endif %}
+    {% endif %}
+{% endblock %}

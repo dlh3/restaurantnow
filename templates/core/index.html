@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+{% block title %}Welcome to the Dine and Dash Core{% endblock %}
+{% block pagecontent %}
+<img src="/static/favicon.ico" alt="Nothing to hear" />
+<ul>
+<li><a href="{% url web:index %}">WEB</a></li>
+{% if user.is_staff %}
+	<li><a href="{% url pos:index %}">POS</a></li>
+{% endif %}
+{% if user.is_superuser %}
+	<li><a href="{% url admin:index %}">Admin</a></li>
+{% endif %}
+</ul>
+{% endblock %}

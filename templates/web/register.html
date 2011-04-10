@@ -1,0 +1,79 @@
+{% extends 'web/index.html' %}
+{% load value_by_key %}
+{% block title %}Register{% endblock %}
+{% block extrahead %}
+<script type="text/javascript">
+/* <![CDATA[ */
+var nameserv = '{% url web:nameserv %}';
+/* ]]> */
+</script>
+<script src="/static/web/register.js" type="text/javascript"></script>
+{% endblock %}
+{% block pagecontent %}
+    <div>
+        <form method="post" action="{% url web:register %}?next={{ auth_next }}">
+        <div>
+            {% csrf_token %}
+            </div>
+            <dl class="form">
+            <dt><label for="id_username">Username: <span class="required">*</span></label></dt>
+                <dd>
+                    <div class="field">
+                    <div class="formerror" id="usernameerror">{% if errors|key:'username' %}{{ errors|key:'username' }}{% endif %}</div>
+                    <input id="id_username" type="text" name="username" maxlength="100" value="{{ fields|key:'uname'|default:'' }}" /><img id="usernameverify" class="jui-icon" src="/static/blank.png" alt="status" width="16" height="16" />
+                    </div>
+                </dd>
+            <dt><label for="id_password">Password: <span class="required">*</span></label></dt>
+                <dd>
+                    <div class="field">
+                        <div class="formerror" id="passworderror">{% if errors|key:'password' %}{{ errors|key:'password' }}{% endif %}</div>
+                        <input id="id_password" type="password" name="password" maxlength="100" value="{{ fields|key:'passwd'|default:'' }}" /><img id="passwordverify" class="jui-icon" src="/static/blank.png" alt="status" width="16" height="16" />
+                    </div>
+                </dd>
+            <dt><label for="id_password">Verify Password: <span class="required">*</span></label></dt>
+                <dd>
+                    <div class="field">
+                        <input id="id_passwordver" type="password" name="passwordver" maxlength="100" value="{{ fields|key:'passwd'|default:'' }}" /><img id="passwordververify" class="jui-icon" src="/static/blank.png" alt="status" width="16" height="16" />
+                    </div>
+                </dd>
+            <dt><label for="id_first_name">First name: <span class="required">*</span></label></dt>
+                <dd>
+                    <div class="field">
+                        <div class="formerror" id="fnameerror">{% if errors|key:'fname' %}{{ errors|key:'fname' }}{% endif %}</div>
+                        <input id="id_first_name" type="text" name="first_name" maxlength="100" value="{{ fields|key:'fname'|default:'' }}" />
+                    </div>
+                </dd>
+            <dt><label for="id_last_name">Last name: <span class="required">*</span></label></dt>
+                <dd>
+                    <div class="field">
+                        <div class="formerror" id="lnameerror">{% if errors|key:'lname' %}{{ errors|key:'lname' }}{% endif %}</div>
+                        <input id="id_last_name" type="text" name="last_name" maxlength="100" value="{{ fields|key:'lname'|default:'' }}" />
+                    </div>
+                </dd>
+            <dt><label for="id_email">Email: <span class="required">*</span></label></dt>
+                <dd>
+                    <div class="field">
+                        <div class="formerror" id="emailerror">{% if errors|key:'email' %}{{ errors|key:'email' }}{% endif %}</div>
+                        <input id="id_email" type="text" name="email" maxlength="255" value="{{ fields|key:'email'|default:'' }}" /><img id="emailverify" class="jui-icon" src="/static/blank.png" alt="status" width="16" height="16" />
+                    </div>
+                </dd>
+<!--            <dt><label for="id_phone">Phone Number:</label></dt>
+                <dd>
+                    <div class="field">
+                        <div class="formerror" id="phoneerror">{% if errors|key:'phone' %}{{ errors|key:'phone' }}{% endif %}</div>
+                        <input id="id_phone" type="text" name="unphone" maxlength="30" value="{{ fields|key:'phone'|default:'' }}" />
+                    </div>
+                </dd>
+-->
+            <dt><label for="id_notes">Notes:</label></dt>
+                <dd>
+                    <div class="field">
+                        <div class="formerror" id="phoneerror">{% if errors|key:'notes' %}{{ errors|key:'notes' }}{% endif %}</div>
+                        <textarea id="id_notes" rows="10" cols="40" name="notes">{{ fields|key:'notes'|default:'' }}</textarea>
+                    </div>
+                </dd>
+            </dl>
+            <p><input type="submit" value="Register" /></p>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'web/index.html' %}
+{% load value_by_key %}
+{% block title %}Menu{% endblock %}
+{% block extrahead %}
+<link rel="stylesheet" href="/static/web/menu.css" type="text/css" />
+<script src="/static/web/menu.js" type="text/javascript"></script>
+{% endblock %}
+{% block pagecontent %}
+    {% if user.is_authenticated %}
+        <form method="post" action="{% url web:checkout %}?next={{ auth_next|default:request.path }}">
+            <div id="menuformcontainer">
+                {% csrf_token %}
+                <div id="ordercart">Your Order
+                    <div id="ordercartitems"></div>
+                    <hr />
+                    <div id="ordercartsubtotalcontainer">Sub-total $<span>{{ order.total|floatformat:2 }}</span></div>
+                </div>
+                <div>
+                    <div>
+                        <span class="fieldtitle">Card Number: <span class="mandatoryfield"</span><br /></span>
+                        <span class=""><input type="text" name="card_num" value="" maxlength="16" /></span>
+                    </div>
+                    <div>
+                        <span class="fieldtitle">Expiry Date: <span class="mandatoryfield"</span><br /></span>
+                        <span class=""><input type="text" name="exp_date" value="" maxlength="4" /></span>
+                    </div>
+                    <div>
+                        <span class="fieldtitle">Card Security Code: <span class="mandatoryfield"></span><br /></span>
+                        <span class=""><input type="text" name="card_code" value="" maxlength="4" /></span>
+                    </div>
+                    <div>
+                        <span class="fieldtitle">Address: <span class="mandatoryfield"></span><br /></span>
+                        <select id="address" name="address">
+                            {% for address in addresses %}
+                                <option value="{{ address.id }}">{{ address.description }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <span class="fieldtitle">Phone Number: <span class="mandatoryfield"></span><br /></span>
+                        <select id="phone" name="phone_number">
+                            {% for phone in phones %}
+                                <option value="{{ phone.id }}">{{ phone.description }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <br /><input type="submit" id="checkout" value="Checkout" />
+                </div>
+            </div>
+        </form>
+    {% endif %}
+    
+    
+{% endblock %}
